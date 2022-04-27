@@ -19,45 +19,5 @@ accelerator:
     required: true
 
 engine:
-  merge:
-    - include: [ "**" ]
-      exclude: [ "pom.xml", "config/**", "catalog/**", "README.md", "DEPLOYING.md" ]
-    - include: [ "pom.xml" ]
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: node-database
-          with: "#artifactId"
-    - include: [ "catalog/**" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: node-database
-          with: "#artifactId"
-    - include: [ "config/**" ]
-      condition: "#deploymentType == 'workload'"
-      chain:
-      - type: ReplaceText
-        substitutions:
-        - text: ": node-database"
-          with: "': ' + #artifactId"
-    - name: README
-      type: Combo
-      onConflict: Append
-      sources:
-      - include: [ "README.md" ]
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: node-database
-            with: "#artifactId"
-      - include: [ "DEPLOYING.md" ]
-        condition: "#deploymentType == 'workload'"
-        chain:
-        - type: ReplaceText
-          substitutions:
-          - text: node-database
-            with: "#artifactId"
-        - type: RewritePath
-          rewriteTo: "'README.md'"
+  type: Include
+  patterns: ['**/*.yaml']
