@@ -1,0 +1,10 @@
+apiVersion: accelerator.apps.tanzu.vmware.com/v1alpha1
+kind: Accelerator
+metadata:
+  name: node-database
+  namespace: accelerator-system
+spec:
+  git:
+    url: http://github.com/johnlafata/node-database-accelerator.git
+    ref:
+      branch: main
