@@ -1,7 +1,7 @@
 accelerator:
   displayName: Node Todo Accelerator
   description: node-js template with mongo db
-  iconUrl: https://nodejs.org/static/images/logo.svg
+  iconUrl: https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png
   tags:
   - node
   - mongodb
