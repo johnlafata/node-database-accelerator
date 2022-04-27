@@ -1,0 +1,63 @@
+accelerator:
+  displayName: Node Todo Accelerator
+  description: node-js template with mongo db
+  iconUrl: https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png
+  tags:
+  - node
+  - database
+
+  # options for the UI
+  options:
+  - name: deploymentType
+    inputType: select
+    choices:
+    - value: workload
+      text: TAP workload using PostgreSQL with service-binding
+    - value: none
+      text: Skip Kubernetes deployment
+    defaultValue: workload
+    required: true
+
+engine:
+  merge:
+    - include: [ "**" ]
+      exclude: [ "pom.xml", "config/**", "catalog/**", "README.md", "DEPLOYING.md" ]
+    - include: [ "pom.xml" ]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: node-database
+          with: "#artifactId"
+    - include: [ "catalog/**" ]
+      condition: "#deploymentType == 'workload'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: node-database
+          with: "#artifactId"
+    - include: [ "config/**" ]
+      condition: "#deploymentType == 'workload'"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: ": node-database"
+          with: "': ' + #artifactId"
+    - name: README
+      type: Combo
+      onConflict: Append
+      sources:
+      - include: [ "README.md" ]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: node-database
+            with: "#artifactId"
+      - include: [ "DEPLOYING.md" ]
+        condition: "#deploymentType == 'workload'"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: node-database
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
